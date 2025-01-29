@@ -35,12 +35,21 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
       sort: "-created",
     });
 
-    const customisations: Record<string, AssetsRecord> = {};
+    let customisations: Record<string, AssetsRecord> = {};
 
     const categoriesWithAssets = categories.map((category) => {
       const categoryAssets = assets.filter(
-        (asset) => asset.collectionId === category.id
+        (asset) => asset.category === category.id
       );
+
+      if (category.defaultAsset) {
+        customisations = {
+          ...customisations,
+          [category.name]: categoryAssets.find(
+            (asset) => asset.id === category.defaultAsset
+          ) as AssetsRecord,
+        };
+      }
 
       return { ...category, assets: categoryAssets };
     });
