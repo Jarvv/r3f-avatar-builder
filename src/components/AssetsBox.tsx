@@ -1,7 +1,7 @@
-import { useCategories } from "../hooks/useCategories";
-import { TypedPocketBase } from "../pocketbase-types";
+import { useCategories } from "@/hooks/useCategories";
+import { TypedPocketBase } from "@/pocketbase-types";
 import PocketBase from "pocketbase";
-import { useConfiguratorStore } from "../stores/configuratorStore";
+import { useConfiguratorStore } from "@/stores/configuratorStore";
 
 const pb = new PocketBase(
   import.meta.env.VITE_POCKETBASE_URL

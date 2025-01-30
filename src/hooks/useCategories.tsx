@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useConfiguratorStore } from "../stores/configuratorStore";
+import { useConfiguratorStore } from "@/stores/configuratorStore";
 
 export const useCategories = () => {
   const { fetchCategories } = useConfiguratorStore();

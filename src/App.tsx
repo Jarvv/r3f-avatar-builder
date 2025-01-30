@@ -1,7 +1,7 @@
 import { Backdrop, OrbitControls, Stage } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { UI } from "./components/UI";
-import { Avatar } from "./components/Avatar";
+import { UI } from "@/components/UI";
+import { Avatar } from "@/components/Avatar";
 
 function App() {
   return (
