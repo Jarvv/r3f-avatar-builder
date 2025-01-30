@@ -1,10 +1,11 @@
 import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
 import { Suspense, useEffect, useRef } from "react";
 import PocketBase from "pocketbase";
-import { useConfiguratorStore } from "../stores/configuratorStore";
+import { useConfiguratorStore } from "@/stores/configuratorStore";
 import { Asset } from "./Asset";
-import { TypedPocketBase } from "../pocketbase-types";
+import { TypedPocketBase } from "@/pocketbase-types";
 import { Group, Object3DEventMap, SkinnedMesh } from "three";
+import { download } from "@/services/Download";
 
 const pb = new PocketBase(
   import.meta.env.VITE_POCKETBASE_URL
@@ -18,6 +19,11 @@ export const Avatar = () => {
 
   const skeleton = (nodes.Plane as SkinnedMesh).skeleton;
   const customisations = useConfiguratorStore((state) => state.customisations);
+  const setDownload = useConfiguratorStore((state) => state.setDownload);
+
+  useEffect(() => {
+    setDownload(() => download(group.current!));
+  }, [setDownload]);
 
   useEffect(() => {
     actions["mixamo.com"]?.play();

@@ -15,6 +15,8 @@ export interface ConfiguratorState {
   currentCategory: CategoryWithAssets | null;
   assets: AssetsRecord[];
   customisations: Record<string, AssetsRecord>;
+  download: () => Promise<void>;
+  setDownload: (download: () => Promise<void>) => void;
   fetchCategories: () => void;
   setCurrentCategory: (category: CategoryWithAssets) => void;
   setAsset: (category: CategoryWithAssets, asset: AssetsRecord) => void;
@@ -27,6 +29,8 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
   currentCategory: null,
   assets: [],
   customisations: {},
+  download: async () => {},
+  setDownload: (download) => set({ download }),
   fetchCategories: async () => {
     const categories = await pb.collection("Categories").getFullList({
       sort: "+position",
