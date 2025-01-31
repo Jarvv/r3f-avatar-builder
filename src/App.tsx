@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { UI } from "@/components/UI";
 import { Avatar } from "@/components/Avatar";
 
-function App() {
+const App = () => {
   return (
     <>
       <UI />
@@ -49,6 +49,6 @@ function App() {
       </Canvas>
     </>
   );
-}
+};
 
 export default App;

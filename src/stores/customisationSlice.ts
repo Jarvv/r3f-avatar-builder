@@ -27,7 +27,10 @@ export interface CustomisationSlice {
   setDownload: (download: () => Promise<void>) => void;
   fetchCategories: () => void;
   setCurrentCategory: (category: CategoryWithAssets) => void;
-  setAsset: (category: CategoryWithAssets, asset: AssetWithColor) => void;
+  setAsset: (
+    category: CategoryWithAssets,
+    asset: AssetWithColor | null
+  ) => void;
   updateColor: (color: string) => void;
 }
 
@@ -52,20 +55,26 @@ export const createCustomisationSlice: StateCreator<
       sort: "-created",
     });
 
-    let customisations: Record<string, AssetsRecord> = {};
+    const customisations: Record<string, AssetWithColor> = {};
 
     const categoriesWithAssets = categories.map((category) => {
       const categoryAssets = assets.filter(
         (asset) => asset.category === category.id
       );
 
-      if (category.defaultAsset) {
-        customisations = {
-          ...customisations,
-          [category.name]: categoryAssets.find(
-            (asset) => asset.id === category.defaultAsset
-          ) as AssetsRecord,
+      const defaultAsset = category.defaultAsset
+        ? categoryAssets.find((asset) => asset.id === category.defaultAsset)
+        : null;
+
+      if (defaultAsset) {
+        customisations[category.name] = {
+          ...defaultAsset,
+          color: category.expand?.colorPalette?.colors?.[0],
         };
+      } else {
+        customisations[category.name] = {
+          color: category.expand?.colorPalette?.colors?.[0],
+        } as AssetWithColor;
       }
 
       return { ...category, assets: categoryAssets };
@@ -80,13 +89,23 @@ export const createCustomisationSlice: StateCreator<
   },
   setCurrentCategory: (category: CategoryWithAssets) =>
     set({ currentCategory: category }),
-  setAsset: (category: CategoryWithAssets, asset: AssetsRecord) =>
-    set((state) => ({
-      customisations: {
-        ...state.customisations,
-        [category.name]: asset,
-      },
-    })),
+  setAsset: (category: CategoryWithAssets, asset: AssetsRecord | null) =>
+    set((state) => {
+      const updatedCustomisations = { ...state.customisations };
+
+      if (asset === null) {
+        updatedCustomisations[category.name] = {
+          color: updatedCustomisations[category.name]?.color,
+        } as AssetWithColor;
+      } else {
+        updatedCustomisations[category.name] = {
+          ...asset,
+          color: updatedCustomisations[category.name]?.color || "",
+        };
+      }
+
+      return { customisations: updatedCustomisations };
+    }),
   updateColor: (color: string) => {
     set((state) => ({
       customisations: {

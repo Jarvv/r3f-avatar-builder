@@ -12,6 +12,10 @@ export const ColorPicker = () => {
     updateColor(color);
   };
 
+  if (!customisations[currentCategory!.name]?.id) {
+    return null;
+  }
+
   return (
     <div className="pointer-events-auto relative flex gap-2 max-w-full overflow-x-auto backdrop-blur0sm py-2 drop-shadow-md no-scrollbar">
       {(currentCategory?.expand?.colorPalette?.colors as string[])?.map(

@@ -37,6 +37,33 @@ export const AssetBox = () => {
       </div>
       {currentCategory && (
         <div className="flex gap-2 flex-wrap px-6">
+          {currentCategory.removable && (
+            <button
+              className={`w-20 h-20 rounded-xl overflow-hidden pointer-events-auto hover:opacity-100 transition-none border-2 duration-300 ${
+                !customisations[currentCategory.name]?.id
+                  ? "border-white opacity-100"
+                  : "border-transparent opacity-80"
+              }`}
+              onClick={() => setAsset(currentCategory, null)}
+            >
+              <div className="w-full h-full flex items-center justify-center text-white bg-black/40">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </div>
+            </button>
+          )}
           {currentCategory.assets.map((asset, index) => (
             <button
               key={index}

@@ -58,6 +58,7 @@ export type CategoriesRecord = {
   id: string;
   name: string;
   position?: number;
+  removable?: boolean;
   updated?: IsoDateString;
 };
 
