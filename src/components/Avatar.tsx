@@ -44,6 +44,7 @@ export const Avatar = () => {
                       customisations[key].url
                     )}
                     skeleton={skeleton}
+                    categoryName={key}
                   />
                 </Suspense>
               )

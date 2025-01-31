@@ -1,16 +1,26 @@
 import { AssetBox } from "@/components/AssetsBox";
 import { useConfiguratorStore } from "@/stores/configuratorStore";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
+import { ColorPicker } from "@/components/ColorPicker";
 
 export const UI = () => {
   const download = useConfiguratorStore((state) => state.download);
+  const currentCategory = useConfiguratorStore(
+    (state) => state.currentCategory
+  );
+  const customisations = useConfiguratorStore((state) => state.customisations);
+
   return (
-    <main className="pointer-events-none fixed z-10 inset-0 p-10">
+    <main className="pointer-events-none fixed z-10 inset-0 p-10 select-none">
       <div className="mx-auto h-full max-w-screen-xl w-full flex flex-col justify-between">
         <div>
           <Button onClick={download}>Download</Button>
         </div>
-        <AssetBox />
+        <div className="px-10 flex flex-col">
+          {currentCategory?.colorPalette &&
+            customisations[currentCategory.name] && <ColorPicker />}
+          <AssetBox />
+        </div>
       </div>
     </main>
   );
