@@ -8,6 +8,7 @@ import type { RecordService } from "pocketbase";
 
 export enum Collections {
   Assets = "Assets",
+  CameraPlacements = "CameraPlacements",
   Categories = "Categories",
   ColorPalettes = "ColorPalettes",
   Authorigins = "_authOrigins",
@@ -15,7 +16,6 @@ export enum Collections {
   Mfas = "_mfas",
   Otps = "_otps",
   Superusers = "_superusers",
-  Position = "position",
   Users = "users",
 }
 
@@ -45,13 +45,27 @@ export type AssetsRecord = {
   category?: RecordIdString;
   created?: IsoDateString;
   id: string;
+  lockedCategories?: RecordIdString[];
   name: string;
   thumbnail: string;
   updated?: IsoDateString;
   url: string;
 };
 
+export type CameraPlacementsRecord<
+  Tposition = [number, number, number],
+  Ttarget = [number, number, number]
+> = {
+  created?: IsoDateString;
+  id: string;
+  name?: string;
+  position?: null | Tposition;
+  target?: null | Ttarget;
+  updated?: IsoDateString;
+};
+
 export type CategoriesRecord = {
+  cameraPlacement?: RecordIdString;
   colorPalette?: RecordIdString;
   created?: IsoDateString;
   defaultAsset?: RecordIdString;
@@ -119,14 +133,6 @@ export type SuperusersRecord = {
   verified?: boolean;
 };
 
-export type PositionRecord = {
-  created?: IsoDateString;
-  id: string;
-  name?: string;
-  updated?: IsoDateString;
-  value?: number;
-};
-
 export type UsersRecord = {
   avatar?: string;
   created?: IsoDateString;
@@ -142,6 +148,12 @@ export type UsersRecord = {
 
 // Response types include system fields and match responses from the PocketBase API
 export type AssetsResponse<Texpand = any> = Required<AssetsRecord> &
+  BaseSystemFields<Texpand>;
+export type CameraPlacementsResponse<
+  Tposition = any,
+  Ttarget = any,
+  Texpand = any
+> = Required<CameraPlacementsRecord<Tposition, Ttarget>> &
   BaseSystemFields<Texpand>;
 export type CategoriesResponse<Texpand = any> = Required<CategoriesRecord> &
   BaseSystemFields<Texpand>;
@@ -159,8 +171,6 @@ export type OtpsResponse<Texpand = any> = Required<OtpsRecord> &
   BaseSystemFields<Texpand>;
 export type SuperusersResponse<Texpand = any> = Required<SuperusersRecord> &
   AuthSystemFields<Texpand>;
-export type PositionResponse<Texpand = any> = Required<PositionRecord> &
-  BaseSystemFields<Texpand>;
 export type UsersResponse<Texpand = any> = Required<UsersRecord> &
   AuthSystemFields<Texpand>;
 
@@ -168,6 +178,7 @@ export type UsersResponse<Texpand = any> = Required<UsersRecord> &
 
 export type CollectionRecords = {
   Assets: AssetsRecord;
+  CameraPlacements: CameraPlacementsRecord;
   Categories: CategoriesRecord;
   ColorPalettes: ColorPalettesRecord;
   _authOrigins: AuthoriginsRecord;
@@ -175,12 +186,12 @@ export type CollectionRecords = {
   _mfas: MfasRecord;
   _otps: OtpsRecord;
   _superusers: SuperusersRecord;
-  position: PositionRecord;
   users: UsersRecord;
 };
 
 export type CollectionResponses = {
   Assets: AssetsResponse;
+  CameraPlacements: CameraPlacementsResponse;
   Categories: CategoriesResponse;
   ColorPalettes: ColorPalettesResponse;
   _authOrigins: AuthoriginsResponse;
@@ -188,7 +199,6 @@ export type CollectionResponses = {
   _mfas: MfasResponse;
   _otps: OtpsResponse;
   _superusers: SuperusersResponse;
-  position: PositionResponse;
   users: UsersResponse;
 };
 
@@ -197,6 +207,9 @@ export type CollectionResponses = {
 
 export type TypedPocketBase = PocketBase & {
   collection(idOrName: "Assets"): RecordService<AssetsResponse>;
+  collection(
+    idOrName: "CameraPlacements"
+  ): RecordService<CameraPlacementsResponse>;
   collection(idOrName: "Categories"): RecordService<CategoriesResponse>;
   collection(idOrName: "ColorPalettes"): RecordService<ColorPalettesResponse>;
   collection(idOrName: "_authOrigins"): RecordService<AuthoriginsResponse>;
@@ -204,6 +217,5 @@ export type TypedPocketBase = PocketBase & {
   collection(idOrName: "_mfas"): RecordService<MfasResponse>;
   collection(idOrName: "_otps"): RecordService<OtpsResponse>;
   collection(idOrName: "_superusers"): RecordService<SuperusersResponse>;
-  collection(idOrName: "position"): RecordService<PositionResponse>;
   collection(idOrName: "users"): RecordService<UsersResponse>;
 };

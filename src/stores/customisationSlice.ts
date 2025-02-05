@@ -2,6 +2,7 @@ import { StateCreator } from "zustand";
 import PocketBase from "pocketbase";
 import {
   AssetsRecord,
+  CameraPlacementsRecord,
   CategoriesRecord,
   ColorPalettesRecord,
   TypedPocketBase,
@@ -14,7 +15,12 @@ const pb = new PocketBase(
 
 export type CategoryWithAssets = CategoriesRecord & {
   assets: AssetWithColor[];
-} & { expand?: { colorPalette: ColorPalettesRecord } };
+} & {
+  expand?: {
+    colorPalette?: ColorPalettesRecord;
+    cameraPlacement?: CameraPlacementsRecord;
+  };
+};
 
 export type AssetWithColor = AssetsRecord & { color?: string };
 
@@ -49,7 +55,7 @@ export const createCustomisationSlice: StateCreator<
   fetchCategories: async () => {
     const categories = await pb.collection("Categories").getFullList({
       sort: "+position",
-      expand: "colorPalette",
+      expand: "colorPalette,cameraPlacement",
     });
     const assets = await pb.collection("Assets").getFullList({
       sort: "-created",
