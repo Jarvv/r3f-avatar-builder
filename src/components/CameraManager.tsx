@@ -10,7 +10,6 @@ export const CameraManager = () => {
   );
 
   useEffect(() => {
-    console.log(currentCategory);
     if (!controls.current) return;
 
     if (currentCategory?.expand?.cameraPlacement) {

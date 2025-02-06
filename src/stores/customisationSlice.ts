@@ -29,6 +29,7 @@ export interface CustomisationSlice {
   currentCategory: CategoryWithAssets | null;
   assets: AssetWithColor[];
   customisations: Record<string, AssetWithColor>;
+  loading: boolean;
   download: () => Promise<void>;
   setDownload: (download: () => Promise<void>) => void;
   fetchCategories: () => void;
@@ -50,6 +51,7 @@ export const createCustomisationSlice: StateCreator<
   currentCategory: null,
   assets: [],
   customisations: {},
+  loading: true,
   download: async () => {},
   setDownload: (download) => set({ download }),
   fetchCategories: async () => {
@@ -91,6 +93,7 @@ export const createCustomisationSlice: StateCreator<
       assets,
       currentCategory: categoriesWithAssets[0],
       customisations,
+      loading: false,
     });
   },
   setCurrentCategory: (category: CategoryWithAssets) =>

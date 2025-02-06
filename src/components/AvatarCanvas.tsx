@@ -5,6 +5,7 @@ import { Avatar } from "@/components/Avatar";
 import { CameraManager } from "@/components/CameraManager";
 import { Lights } from "@/components/Lights";
 import { CAMERA } from "@/const";
+import { AvatarLoader } from "./AvatarLoader";
 
 export const AvatarCanvas = () => {
   return (
@@ -25,7 +26,9 @@ export const AvatarCanvas = () => {
       <CameraManager />
       <Lights />
       <SoftShadows size={52} samples={16} focus={0.5} />
-      <Avatar />
+      <AvatarLoader>
+        <Avatar />
+      </AvatarLoader>
       <EffectComposer>
         <Bloom mipmapBlur luminanceThreshold={1.2} intensity={1.2} />
         <N8AO
