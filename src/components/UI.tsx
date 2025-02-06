@@ -18,7 +18,7 @@ export const UI = () => {
           loading ? "opacity-100" : "opacity-0"
         }`}
       >
-        <p className="animate-pulsetext-white">Loading...</p>
+        <p className="animate-pulse text-white">Loading...</p>
       </div>
       <div className="mx-auto h-full max-w-screen-xl w-full flex flex-col justify-between">
         <div>
