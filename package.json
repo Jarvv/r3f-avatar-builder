@@ -11,6 +11,9 @@
     "typegen": "pocketbase-typegen --db ./pocketbase/pb_data/data.db"
   },
   "dependencies": {
+    "@gltf-transform/core": "^4.1.1",
+    "@gltf-transform/extensions": "^4.1.1",
+    "@gltf-transform/functions": "^4.1.1",
     "@radix-ui/react-scroll-area": "^1.2.2",
     "@radix-ui/react-slot": "^1.1.1",
     "@react-spring/three": "^9.7.5",

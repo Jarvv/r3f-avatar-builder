@@ -1,15 +1,27 @@
 import { Group, Object3DEventMap } from "three";
 import { GLTFExporter } from "three-stdlib";
+import { NodeIO } from "@gltf-transform/core";
+import { prune, dedup, quantize } from "@gltf-transform/functions";
+import { KHRMeshQuantization } from "@gltf-transform/extensions";
 
 export const download = async (group: Group<Object3DEventMap>) => {
   const exporter = new GLTFExporter();
 
-  const glb = (await exporter.parseAsync(group, {
+  const data = (await exporter.parseAsync(group, {
     binary: true,
   })) as ArrayBuffer;
 
+  const io = new NodeIO().registerExtensions([KHRMeshQuantization]);
+
+  const doc = await io.readBinary(new Uint8Array(data));
+
+  await doc.transform(prune(), dedup(), quantize());
+
+  const glb = await io.writeBinary(doc);
+
   const link = document.createElement("a");
   link.style.display = "none";
+
   link.href = URL.createObjectURL(
     new Blob([glb], { type: "application/octet-stream" })
   );
