@@ -19,7 +19,7 @@ export const AssetBox = () => {
   } = useConfiguratorStore();
 
   return (
-    <div className="rounded-t-lg bg-gradient-to-br from-black/30 to-indigo-900/20 backdrop-blur-sm drop-shadow-md p-6 gap-6 flex flex-col">
+    <div className="rounded-t-lg bg-gradient-to-br from-black/50 to-indigo-900/30 backdrop-blur-sm drop-shadow-md p-6 gap-6 flex flex-col">
       <div className="flex items-center gap-6 pb-2 px-6 pointer-events-auto overflow-x-auto no-scrollbar">
         {categories.map((category) => (
           <button
@@ -39,10 +39,11 @@ export const AssetBox = () => {
         <div className="flex gap-2 flex-wrap px-6">
           {currentCategory.removable && (
             <button
-              className={`w-20 h-20 rounded-xl overflow-hidden pointer-events-auto hover:opacity-100 transition-none border-2 duration-300 ${
+              className={`w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden pointer-events-auto hover:opacity-100 transition-all border-2 duration-300
+              bg-gradient-to-tr ${
                 !customisations[currentCategory.name]?.id
-                  ? "border-white opacity-100"
-                  : "border-transparent opacity-80"
+                  ? "border-white from-white/20 to-white/30"
+                  : "from-black/70 to-black/20 border-black"
               }`}
               onClick={() => setAsset(currentCategory, null)}
             >
@@ -67,11 +68,13 @@ export const AssetBox = () => {
           {currentCategory.assets.map((asset, index) => (
             <button
               key={index}
-              className={`w-20 h-20 rounded-xl overflow-hidden pointer-events-auto hover:opacity-100 transition-none border-2 duration-300 ${
-                customisations[currentCategory.name]?.id === asset.id
-                  ? "border-white opacity-100"
-                  : "border-transparent opacity-80"
-              }`}
+              className={`w-20 h-20  flex-shrink-0 rounded-xl overflow-hidden pointer-events-auto hover:opacity-100 transition-all border-2 duration-300
+                bg-gradient-to-tr
+                ${
+                  customisations[currentCategory.name]?.id === asset.id
+                    ? "border-white from-white/20 to-white/30"
+                    : "from-black/70 to-black/20 border-black"
+                }`}
               onClick={() => setAsset(currentCategory, asset)}
             >
               <img

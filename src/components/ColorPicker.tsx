@@ -17,15 +17,15 @@ export const ColorPicker = () => {
   }
 
   return (
-    <div className="pointer-events-auto relative flex gap-2 max-w-full overflow-x-auto backdrop-blur0sm py-2 drop-shadow-md no-scrollbar">
+    <div className="pointer-events-auto relative flex gap-2 max-w-full overflow-x-auto backdrop-blur-sm py-2 drop-shadow-md no-scrollbar px-2 md:px-0">
       {(currentCategory?.expand?.colorPalette?.colors as string[])?.map(
         (color, index) => (
           <Button
             key={index}
-            variant={"ghost"}
+            variant={"color"}
             size={"icon"}
             onClick={() => handleColorChange(color)}
-            className={`border ${
+            className={`${
               customisations[currentCategory!.name]?.color === color
                 ? "border-white"
                 : "border-transparent"
