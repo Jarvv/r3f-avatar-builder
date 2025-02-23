@@ -1,4 +1,4 @@
-import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { Suspense, useEffect, useRef } from "react";
 import PocketBase from "pocketbase";
 import { useConfiguratorStore } from "@/stores/configuratorStore";
@@ -6,6 +6,9 @@ import { Asset } from "./Asset";
 import { TypedPocketBase } from "@/pocketbase-types";
 import { Group, Object3DEventMap, SkinnedMesh } from "three";
 import { download } from "@/services/Download";
+import { useThree } from "@react-three/fiber";
+import { screenshot } from "@/services/Screenshot";
+import { useAvatarAnimations } from "@/services/Animation";
 
 const pb = new PocketBase(
   import.meta.env.VITE_POCKETBASE_URL
@@ -14,20 +17,23 @@ const pb = new PocketBase(
 export const Avatar = () => {
   const group = useRef<Group<Object3DEventMap>>(null);
   const { nodes } = useGLTF("/models/Armature.glb");
-  const { animations } = useFBX("/models/Idle.fbx");
-  const { actions } = useAnimations(animations, group);
 
+  const gl = useThree((state) => state.gl);
   const skeleton = (nodes.Plane as SkinnedMesh).skeleton;
   const customisations = useConfiguratorStore((state) => state.customisations);
+
   const setDownload = useConfiguratorStore((state) => state.setDownload);
+  const setScreenshot = useConfiguratorStore((state) => state.setScreenshot);
+
+  useAvatarAnimations(group);
 
   useEffect(() => {
     setDownload(() => download(group.current!));
   }, [setDownload]);
 
   useEffect(() => {
-    actions["mixamo.com"]?.play();
-  }, [actions]);
+    setScreenshot(() => screenshot(gl));
+  }, [setScreenshot, gl]);
 
   return (
     <group ref={group} dispose={null}>

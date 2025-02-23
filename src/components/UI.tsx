@@ -1,10 +1,12 @@
-import { AssetBox } from "@/components/AssetsBox";
+import { AssetBox } from "@/components/AssetBox";
 import { useConfiguratorStore } from "@/stores/configuratorStore";
 import { Button } from "@/components/ui/button";
 import { ColorPicker } from "@/components/ColorPicker";
+import { PoseBox } from "./PoseBox";
 
 export const UI = () => {
   const download = useConfiguratorStore((state) => state.download);
+  const screenshot = useConfiguratorStore((state) => state.screenshot);
   const currentCategory = useConfiguratorStore(
     (state) => state.currentCategory
   );
@@ -21,8 +23,16 @@ export const UI = () => {
         <p className="animate-pulse text-white">Loading...</p>
       </div>
       <div className="mx-auto h-full max-w-screen-xl w-full flex flex-col justify-between">
-        <div>
-          <Button onClick={download}>Download</Button>
+        <div className="flex justify-between p-10">
+          <PoseBox />
+          <div className="flex items-cente gap-2">
+            <Button variant={"secondary"} onClick={screenshot}>
+              Screenshot
+            </Button>
+            <Button variant={"secondary"} onClick={download}>
+              Download
+            </Button>
+          </div>
         </div>
         <div className="px-10 flex flex-col">
           {currentCategory?.colorPalette &&

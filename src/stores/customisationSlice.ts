@@ -30,6 +30,8 @@ export interface CustomisationSlice {
   assets: AssetWithColor[];
   customisations: Record<string, AssetWithColor>;
   loading: boolean;
+  screenshot: () => void;
+  setScreenshot: (screenshot: () => void) => void;
   download: () => Promise<void>;
   setDownload: (download: () => Promise<void>) => void;
   fetchCategories: () => void;
@@ -52,6 +54,8 @@ export const createCustomisationSlice: StateCreator<
   assets: [],
   customisations: {},
   loading: true,
+  screenshot: () => {},
+  setScreenshot: (screenshot) => set({ screenshot }),
   download: async () => {},
   setDownload: (download) => set({ download }),
   fetchCategories: async () => {
